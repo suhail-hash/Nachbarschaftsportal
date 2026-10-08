@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>{title} - Nachbarschaftsportal</title>
+    <link rel="icon" type="image/x-icon" href="/img/favicon/favicon.ico">
+    <!--
+    <link rel="icon" type="image/x-icon" href="/img/favicon/favicon.ico">
+    <link rel="stylesheet" href="/css/profileSetup.css">
+    -->
+
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/theme.css">
+    <!-- https://leafletjs.com/examples/quick-start/ -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+          integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+          crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+            integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+            crossorigin=""></script>
+</head>
+<style>
+    #map {
+        height: 300px;
+    }
+</style>
+<script>
+    const latitude = {latitudeCity};
+    const longitude = {longitudeCity};
+</script>
+
+<body>
+    {#include components/navbar active = "findOffer" /}
+    {#include components/header title="Anzeige"/}
+
+<main class="container my-4">
+    <div class="row">
+        <div class="col-12 col-md-10 col-lg-7 mx-auto">
+
+            <div class="card mb-3 shadow-sm">
+                <div class="mb-1 shadow-sm offer-image-details card-img-top text-center btn-primary"
+                     style="background-color: #fff7ed ">
+                    <p class="position-absolute top-0 end-0 m-2">
+                        {#switch status.name}
+                            {#case 'AVAILABLE'}
+                                <span class="badge text-bg-primary-light">Verfügbar</span>
+                            {#case 'NOT_AVAILABLE'}
+                                <span class="badge text-bg-danger">Nicht mehr verfügbar</span>
+                        {/switch}
+                        <br>
+                       <span class="badge text-bg-primary-light" hidden>{privacy}</span>
+                    </p>
+
+                    <img src="/img/offer/{imageName}" alt="Anzeigen Bild" class="offer-image-details">
+                </div>
+
+                <div class="card-body">
+                    <h1 class="fs-3 mb-2">{title}</h1>
+                    <div class="mb-4">
+                        <span class="badge text-bg-primary">
+                            {#switch category.name}
+                                {#case 'FOR_SALE'}
+                                    Zu verkaufen
+                                {#case 'FOR_RENT'}
+                                    Zu verleihen
+                                {#case 'WANTED'}
+                                    Gesucht
+                            {/switch}
+                        </span>
+                        <span class="badge text-bg-primary-light">
+                            {#switch categorySubject.name}
+                            {#case 'ELECTRONICS'}
+                                Elektronik
+                            {#case 'HOME_AND_GARDEN'}
+                                Haus & Garten
+                            {#case 'FASHION_AND_ACCESSORIES'}
+                                Mode & Accessoires
+                            {#case 'VEHICLES'}
+                                Fahrzeuge
+                            {#case 'SPORTS_AND_LEISURE'}
+                                Sport & Freizeit
+                            {/switch}
+                        </span>
+                        <!--<span class="badge text-bg-light">ca. 2,5 km</span>-->
+                    </div>
+                    <h1 class="card-text fs-3 fw-bold">{price} € <span class="card-text fw-light fs-4 "> {addition}</span>
+                    </h1>
+                    <br>
+                    <p class="card-text">
+                        {description}
+                    </p>
+
+
+                    <div class="d-flex mb-4 justify-content-between align-items-center">
+                        <span class="text-body-secondary">von <strong>{label.get(ownerId)}</strong></span>
+                        <div>
+                            {#if userId != ownerId}
+                                <a href="/chat/{ownerId}?offerId={id}" class="btn btn-primary fw-bold btn-sm">Nachricht schreiben</a>
+                            {/if}
+                        </div>
+                    </div>
+
+                    <div id="map" class="mb-1 shadow-sm offer-map card"></div>
+                </div>
+            </div>
+
+            <!-- https://getbootstrap.com/docs/5.0/components/accordion/ -->
+            <div hidden class="accordion mb-4 shadow-sm" id="devAccordion">
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="panelsStayOpen-headingOne">
+                        <button class="accordion-button collapsed bg-white" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#panelsStayOpen-collapseOne"
+                                aria-expanded="false"
+                                aria-controls="panelsStayOpen-collapseOne">
+                            Zusätzliche Daten (DEV)
+                        </button>
+                    </h2>
+                    <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse"
+                         aria-labelledby="panelsStayOpen-headingOne">
+                        <div class="accordion-body">
+
+                            <label for="status">Status</label>
+                            <select id="status" name="status" class="form-select">
+                                <option value="OPEN">Aktiv</option>
+                                <option value="SOLD">Verkauft</option>
+                                <option value="CLOSED">Geschlossen</option>
+                                <option value="HIDDEN">Inventar</option>
+                                <option value="AVAILABLE">Verfügbar</option>
+                                <option value="NOT_AVAILABLE">Nicht Verfügbar</option>
+                            </select>
+
+                            <label for="privacy">Wer darf die Anzeige sehen?</label>
+                            <p id="privacy" name="privacy">{privacy}</p>
+
+                            <label for="ownerId">User</label>
+                            <p id="ownerId" >{ownerId}</p>
+
+                            <label for="longitudeAddress">Längengrad Adresse</label>
+                            <p id="longitudeAddress">{longitudeAddress}</p>
+
+                            <label for="latitudeAddress">Breitengrad Adresse</label>
+                            <p id="latitudeAddress">{latitudeAddress}</p>
+
+                            <label for="longitudeCity">Längengrad Stadt</label>
+                            <p id="longitudeCity">{longitudeCity}</p>
+
+                            <label for="latitudeCity">Breitengrad Stadt</label>
+                            <p id="latitudeCity">{latitudeCity}</p>
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</main>
+
+<script src="/js/showOffer.js"></script>
+<script src="/js/bootstrap.bundle.js"></script>
+
+</body>
+</html>

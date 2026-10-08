@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/x-icon" href="/img/favicon/favicon.ico">
+    <title>Profil</title>
+
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/theme.css">
+</head>
+
+<body data-profil-user-id="{profilUserId}">
+
+{!Navbar aus components/navbar.qute.html!}
+    {#include components/navbar active = "profil" /}
+
+    {#include components/header title = "Dein Profil"/}
+
+<div id="notFound" class="alert alert-warning mx-auto col-12 col-lg-8" hidden>
+    Dieses Profil existiert nicht (mehr).
+</div>
+
+<main class="container my-4">
+
+    <div class="row">
+        <div class="col-12 col-lg-8 mx-auto">
+
+            <!-- Profile -->
+            <div class="row gy-4">
+                <div class="col-md-6">
+                    <div class="text-uppercase small text-body-secondary">
+                        Anzeigename
+                    </div>
+                    <div id="displayNameInfo"
+                         class="fs-5 fw-semibold">
+                        <div class="spinner-border spinner-border-sm text-primary"></div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="text-uppercase small text-body-secondary">
+                        Name
+                    </div>
+                    <div id="nameInfo"
+                         class="fs-5">
+                        <div class="spinner-border spinner-border-sm text-primary"></div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="text-uppercase small text-body-secondary">
+                        Stadt
+                    </div>
+                    <div id="cityText"
+                         class="fs-5">
+                        <div class="spinner-border spinner-border-sm text-primary"></div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="text-uppercase small text-body-secondary">
+                        PLZ
+                    </div>
+                    <div id="plzText"
+                         class="fs-5">
+                        <div class="spinner-border spinner-border-sm text-primary"></div>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="text-uppercase small text-body-secondary">
+                        Straße
+                    </div>
+                    <div id="streetText"
+                         class="fs-5">
+                        <div class="spinner-border spinner-border-sm text-primary"></div>
+                    </div>
+                </div>
+            </div>
+            {#if ! isOwnProfile}
+                <hr>
+                <div class="text-end">
+                    <button id="addFriendBtn" type="button"
+                            class="btn btn-primary rounded-pill px-4">
+                        Freund:in hinzufügen
+                    </button>
+                </div>
+            {/if}
+            <hr>
+            <!-- Offers -->
+            <h2 class="fs-4 mb-3">
+                {#if isOwnProfile}
+                    Deine Anzeigen
+                {#else}
+                    Anzeigen dieses Nutzers
+                {/if}
+            </h2>
+            <div id="offersLoading"
+                 class="text-center my-5">
+                <div class="spinner-border text-primary"
+                     role="status">
+                    <span class="visually-hidden">
+                        Anzeigen werden geladen...
+                    </span>
+                </div>
+            </div>
+            <div id="offersContainer" hidden>
+                {#if offers}
+                    {#for offer in offers}
+
+                        <div class="card mb-3 shadow-sm">
+                            <div class="mb-1 shadow-sm offer-image card-img-top text-center btn-primary"
+                                 style="background-color: #fff7ed ">
+                                <p class="position-absolute top-0 end-0 m-2">
+                                    {#switch offer.status.name}
+                                        {#case 'AVAILABLE'}
+                                            <span class="badge text-bg-primary-light">Verfügbar</span>
+                                        {#case 'NOT_AVAILABLE'}
+                                            <span class="badge text-bg-danger">Nicht mehr verfügbar</span>
+                                       {/switch}
+                                    <br>
+                                    <span class="badge text-bg-primary-light" hidden>{offer.privacy}</span>
+                                </p>
+                                <img src="/img/offer/{offer.imageName}" alt="Anzeigen Bild" class="offer-image">
+                            </div>
+                            <div class="card-body">
+                                <div class="mb-2">
+                                   <span class="badge text-bg-primary">
+                            {#switch offer.category.name}
+                                {#case 'FOR_SALE'}
+                                    Zu verkaufen
+                                {#case 'FOR_RENT'}
+                                    Zu verleihen
+                                {#case 'WANTED'}
+                                    Gesucht
+                            {/switch}
+                                    </span>
+                                    <span class="badge text-bg-primary-light">
+                                    {#switch offer.categorySubject.name}
+                                    {#case 'ELECTRONICS'}
+                                        Elektronik
+                                    {#case 'HOME_AND_GARDEN'}
+                                        Haus & Garten
+                                    {#case 'FASHION_AND_ACCESSORIES'}
+                                        Mode & Accessoires
+                                    {#case 'VEHICLES'}
+                                        Fahrzeuge
+                                    {#case 'SPORTS_AND_LEISURE'}
+                                        Sport & Freizeit
+                                    {/switch}
+                                </span>
+                                </div>
+
+                                <h5 class="card-title">{offer.title}</h5>
+                                <p class="card-text text-truncate">
+                                    {offer.description}
+                                </p>
+                                <p class="card-text fw-bold fs-5">{offer.price} € <span class="card-text fw-light"> {offer.addition}</span></p>
+
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <span class="text-body-secondary">von <strong>diesem User</strong></span>
+                                    <div>
+                                        {#if userId == offer.ownerId}
+                                            <a href="/newOffer/{offer.id}" class="btn btn-outline-primary btn-sm">Anzeige bearbeiten</a>
+                                        {/if}
+                                        <a href="/showOffer/{offer.id}" class="btn btn-primary btn-sm">Anzeige öffnen</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {/for}
+                {#else}
+                    <div class="card mb-3 shadow-sm">
+                        <div class="mb-1 text-center">
+                            <div class="mb-3 offer-image card-img-top text-center btn-primary">
+                                <img  src="/img/empty_icon.png" alt="Keine Anzeigen" class="offer-image">
+                            </div>
+                            <p class="card-text mb-3 text-body-secondary fw-bold">
+                                Keine Anzeigen</p>
+                        </div>
+                    </div>
+                {/if}
+            </div>
+        </div>
+    </div>
+</main>
+<script src="/js/bootstrap.bundle.js"></script>
+<script src="/js/profile.js"></script>
+
+</body>
+</html>

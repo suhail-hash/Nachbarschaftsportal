@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Postfach</title>
+    <link rel="icon" type="image/x-icon" href="/img/favicon/favicon.ico">
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/theme.css">
+</head>
+<body>
+{!Navbar aus components/navbar.qute.html!}
+    {#include components/navbar active = "inbox" /}
+
+<main class="container my-4">
+    <div class="row">
+        <div class="col-12 col-md-8 col-lg-6 mx-auto">
+            <h1 class="fs-2 mb-4">Dein Postfach</h1>
+            <p class="subtitle mb-4">
+                Hier siehst du alle deine aktuellen Chats.
+                <br>Deine Freunde werden mit vollständigem Namen angezeigt.
+            </p>
+            <div class="card shadow-sm">
+                <div id="chat-list" class="list-group list-group-flush"></div>
+            </div>
+
+            <p id="empty-hint" class="text-body-secondary text-center my-5" hidden>
+                Noch keine Unterhaltungen.
+            </p>
+
+        </div>
+    </div>
+</main>
+
+<script src="/js/bootstrap.bundle.js"></script>
+<script src="/js/inbox.js"></script>
+</body>
+</html>

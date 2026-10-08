@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Nachbarschaftsportal</title>
+    <link rel="icon" type="image/x-icon" href="/img/favicon/favicon.ico">
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/theme.css">
+
+
+    <!-- https://leafletjs.com/examples/quick-start/ -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+          integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+          crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+            integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+            crossorigin=""></script>
+
+
+</head>
+<body {#if user} onload="getGeosForUser(2)" {/if}>
+
+{!Navbar aus components/navbar.qute.html!}
+    {#include components/navbar active = "home" /}
+
+<!--PLZ-Suche-->
+<div class="container mt-4">
+    <section class="row mb-4 ">
+        <div class="col-12 col-sm-9 col-md-7 mx-auto">
+            <div class="d-flex gap-2">
+                {#if user}
+                    <h1 class="fs-4">Hallo {user.firstName} !</h1>
+                {#else}
+                    <input id="searchPLZ" class="form-control rounded-pill px-3" type="search" name="plz"
+                                placeholder="PLZ eingeben…" aria-label="PLZ-Suche"
+                                inputmode="numeric" pattern="[0-9]\{5}" maxlength="5">
+                    <button id="searchButton" class="btn btn-primary rounded-pill px-4" type="button">Suchen</button>
+                {/if}
+            </div>
+        </div>
+    </section>
+</div>
+
+<main class="container my-4">
+    <div class="row">
+        <div class="col-12 col-md-10 col-lg-7 mx-auto">
+            <div id="map" class="card mb-4 shadow-sm offer-map card-img-top"></div>
+            {#if user}
+                    {#include components/address /}
+            {/if}
+            <h1 class="fs-4 mb-4">Anzeigen in deiner Nähe</h1>
+
+            <div id="offerList"></div> <!-- Hier werden die Anzeigen geladen -->
+            {#if !userId}
+            <div>
+                <p class="text-center mt-3">
+                <h2 class="text-center fs-1 mb-3 " style="letter-spacing: 2px; color: #f97316">.....</h2>
+                <p class="text-center mt-5 mb-5 ">
+                    Gebe einfach deine Postleitzahl ein und schaue welche Angebote in deiner Nähe verfügbar sind.
+                    <br><br>
+                    Oder Registriere dich kostenlos um noch mehr Anzeigen zu sehen und um dich mit deinen Nachbarn und Freunden zu connecten!
+                </p>
+                <a class="btn btn-primary rounded-pill px-3 fw-bold mb-3 w-100" href="/login"  type="button">
+                    Anmelden / Registrieren
+                </a>
+            </div>
+                {#else}
+
+            {/if}
+
+        </div>
+    </div>
+</main>
+
+
+
+
+
+{!Willkommens-Modal: erscheint nur mit ?welcome=1!}
+<div class="modal fade" id="welcomeModal" tabindex="-1"
+     aria-labelledby="welcomeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header border-0">
+                <h1 class="modal-title fs-5" id="welcomeModalLabel">
+                    Willkommen im Nachbarschaftsportal!
+                </h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                        aria-label="Schließen"></button>
+            </div>
+            <div class="modal-body">
+                <p class="mb-0">
+                    Dein Profil ist eingerichtet. Eine automatische Nachricht
+                    wurde an alle Nachbarn in deiner Nähe gesendet.
+                </p>
+            </div>
+            <div class="modal-footer border-0">
+                <button type="button" class="btn btn-primary rounded-pill px-4"
+                        data-bs-dismiss="modal">Los geht's</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="/js/bootstrap.bundle.js"></script>
+<script src="/js/home.js"></script>
+</body>
+</html>
+
+<!--Quellen-->
+{!https://getbootstrap.com/docs/5.3/components/!}

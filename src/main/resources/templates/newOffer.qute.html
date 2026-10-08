@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Neue Anzeige erstellen</title>
+    <link rel="icon" type="image/x-icon" href="/img/favicon/favicon.ico">
+    <!--
+    <link rel="icon" type="image/x-icon" href="/img/favicon/favicon.ico">
+    <link rel="stylesheet" href="/css/profileSetup.css">
+    -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/theme.css">
+
+    <!-- https://leafletjs.com/examples/quick-start/ -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+          integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+          crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+            integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+            crossorigin=""></script>
+</head>
+<style>
+    #map {
+        height: 250px;
+    }
+</style>
+
+<script>
+    const latitude = 52.2;
+    const longitude = 7.9;
+</script>
+
+<body data-offer-id="{id}">
+
+{!Navbar aus components/navbar.qute.html!}
+    {#include components/navbar active = "newOffer" /}
+
+
+<main class="container my-4">
+    <div class="row">
+        <div class="col-12 col-md-10 col-lg-7 mx-auto">
+
+            <h1  class="fs-2 mb-4" >Eine Anzeige erstellen</h1>
+
+            <p class="subtitle">
+                Hier kannst du deinen eigenen Anzeigen erstellen. Du kannst Sachen <i>verkaufen</i>, <i>verschenken</i> oder <i>verleihen</i>. Solltest du etwas suchen, kannst du hier ebenfalls eine <i>Such-Anzeige</i> mit deinen genauen Anforderungen aufgeben.
+                <br>Zum Schutz deine Privatsphäre wird nicht dein genauer Standort<img height="22px" src="/img/pin_orange_light.png">verwendet, sondern der Mittelpunkt deines PLZ-Bereiches.<img height="22px" src="/img/pin_orange.png">
+            </p>
+
+            <form id="newOfferForm" action="/newOffer" method="POST" enctype="multipart/form-data">
+
+                <div class="card mb-3 shadow-sm">
+                    <div class="card-body">
+                        <h2 class="fs-5 card-title mb-3">Allgemein</h2>
+                        <div class="row mb-1">
+                            <div class="col">
+                                <label for="status" class="form-label">Status</label>
+                                <select id="status" name="status" class="form-select">
+                                    <option value="AVAILABLE" {#if status.name() == 'AVAILABLE'}selected{/if}>Verfügbar</option>
+                                    <option value="NOT_AVAILABLE" {#if status.name() == 'NOT_AVAILABLE'}selected{/if}>Nicht Verfügbar</option>
+                                </select>
+                            </div>
+                            <div hidden class="col">
+                                <label for="privacy" class="form-label">Sichtbarkeit </label>
+                                <select id="privacy" name="privacy" class="form-select">
+                                    <option value="PUBLIC" {#if privacy.name() == 'PUBLIC'}selected{/if}>
+                                        Alle (anonymisiert)
+                                    </option>
+                                    <!--<option value="GROUP" {#if privacy.name() == 'GROUP'}selected{/if}>Gruppe (bitte wählen)</option>-->
+                                    <option value="FRIENDS" {#if privacy.name() == 'FRIENDS'}selected{/if}>
+                                        Freunde
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card mb-3 shadow-sm">
+                    <div id="map" class="mb-1 shadow-sm offer-map card-img-top"></div>
+                    <div class="card-body">
+                        <h2 class="fs-5 card-title mb-3">Deine Anzeige</h2>
+                        <div class="row mb-4">
+                            <div class="col">
+                                <label for="title" class="form-label">Titel</label>
+                                <input
+                                        id="title"
+                                        name="title"
+                                        type="text"
+                                        placeholder="Titel der Anzeige"
+                                        class="form-control"
+                                        value="{title}"
+                                        required
+                                >
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col">
+                                <label for="category" class="form-label">Art</label>
+                                <select id="category" name="category" class="form-select">
+                                    <option value="FOR_SALE" {#if category.name() == 'FOR_SALE'}selected{/if}>
+                                        Zu verkaufen
+                                    </option>
+                                    <option value="FOR_RENT" {#if category.name() == 'FOR_RENT'}selected{/if}>
+                                        Zu verleihen
+                                    </option>
+                                    <option value="WANTED" {#if category.name() == 'WANTED'}selected{/if}>
+                                        Gesucht
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="col">
+                                <label for="categorySubject" class="form-label">Kategorie</label>
+                                <select id="categorySubject" name="categorySubject" class="form-select">
+                                    <option value="ELECTRONICS" {#if categorySubject.name() == 'ELECTRONICS'}selected{/if}>
+                                        Elektronik
+                                    </option>
+
+                                    <option value="HOME_AND_GARDEN" {#if categorySubject.name() == 'HOME_AND_GARDEN'}selected{/if}>
+                                        Haus & Garten
+                                    </option>
+
+                                    <option value="FASHION_AND_ACCESSORIES" {#if categorySubject.name() == 'FASHION_AND_ACCESSORIES'}selected{/if}>
+                                        Mode & Accessoires
+                                    </option>
+
+                                    <option value="VEHICLES" {#if categorySubject.name() == 'VEHICLES'}selected{/if}>
+                                        Fahrzeuge
+                                    </option>
+
+                                    <option value="SPORTS_AND_LEISURE" {#if categorySubject.name() == 'SPORTS_AND_LEISURE'}selected{/if}>
+                                        Sport & Freizeit
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col">
+                                <label for="description" class="form-label">Beschreibung</label>
+                                <textarea
+                                        id="description"
+                                        name="description"
+                                        rows="4"
+                                        placeholder="Beschreibe deine Anzeige..."
+                                        class="form-control"
+                                        required
+                                >{description}</textarea>
+                            </div>
+                        </div>
+
+                        <div class="row mb-4">
+                            <div class="col">
+                                <label for="price" class="form-label">Preis in €</label>
+                                <input
+                                        id="price"
+                                        name="price"
+                                        type="number"
+                                        min="0.01"
+                                        step="0.01"
+                                        max="10000"
+                                        value="{price}"
+                                        placeholder="Preis in €"
+                                        class="form-control"
+                                        required
+                                ></div>
+                            <div class="col">
+                                <label for="addition" class="form-label">Zusatz</label>
+                                <input
+                                        id="addition"
+                                        name="addition"
+                                        type="text"
+                                        placeholder="z.B. VB , pro Tag, etc."
+                                        value="{addition}"
+                                        class="form-control"
+                                >
+
+                            </div>
+                        </div>
+                        <div class="row mb-4">
+                            <div class="col">
+                                <label for="image" class="form-label">Bilder</label>
+                                <input type="file" id="pictures" name="image" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card mb-3 shadow-sm">
+                    <div class="card-body">
+                        <h2 class="fs-5 card-title mb-3">Adresse</h2>
+                        <div class="row">
+                            <div class="col-4 mb-3">
+                                <label for="plz" class="form-label">PLZ</label>
+                                <input id="plz" type="text" class="form-control" placeholder="Postleitzahl"
+                                       inputmode="numeric" pattern="[0-9]\{5}" maxlength="5" value="{plz}" required>
+                            </div>
+                            <div class="col-8 mb-3">
+                                <label for="city" class="form-label">Stadt</label>
+                                <input id="city" type="text" class="form-control"  placeholder="Stadt" value="{city}">
+                            </div>
+                        </div>
+                        <div class="mb-4">
+                            <label for="street" class="form-label">Straße u. Hausnummer</label>
+                            <input id="street" type="text" class="form-control"  placeholder="Straße und Hausnummer" value="{street}">
+                        </div>
+                        <div class="text-end">
+                            <button id="refreshAddress" type="button" class="btn btn-primary">Adresse aktualisieren
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- https://getbootstrap.com/docs/5.0/components/accordion/ -->
+                <div  hidden class="accordion mb-4 shadow-sm" id="devAccordion">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="panelsStayOpen-headingOne">
+                            <button class="accordion-button collapsed bg-white" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#panelsStayOpen-collapseOne"
+                                    aria-expanded="false"
+                                    aria-controls="panelsStayOpen-collapseOne">
+                                Zusätzliche Daten (DEV)
+                            </button>
+                        </h2>
+                        <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse"
+                             aria-labelledby="panelsStayOpen-headingOne">
+                            <div class="accordion-body">
+                                <label for="ownerId" class="form-label">User</label>
+                                <input
+                                        id="ownerId"
+                                        name="ownerId"
+                                        type="text"
+                                        value="{userId}"
+                                        class="form-control mb-2"
+                                        required
+                                >
+
+                                <label for="offerId" class="form-label">Anzeigen ID</label>
+                                <input
+                                        id="offerId"
+                                        name="offerId"
+                                        type="text"
+                                        value="{id}"
+                                        required
+                                        class="form-control mb-2"
+                                >
+
+                                <label for="longitudeAddress" class="form-label">Längengrad Adresse</label>
+                                <input
+                                        id="longitudeAddress"
+                                        name="longitudeAddress"
+                                        type="text"
+                                        class="form-control mb-2"
+                                        value="{longitudeAddress}"
+                                        required
+                                >
+
+                                <label for="latitudeAddress" class="form-label">Breitengrad Adresse</label>
+                                <input
+                                        id="latitudeAddress"
+                                        name="latitudeAddress"
+                                        type="text"
+                                        class="form-control mb-2"
+                                        value="{latitudeAddress}"
+                                        required
+                                >
+
+                                <label for="longitudeCity" class="form-label">Längengrad Stadt</label>
+                                <input
+                                        id="longitudeCity"
+                                        name="longitudeCity"
+                                        type="text"
+                                        class="form-control mb-2"
+                                        value="{longitudeCity}"
+                                        required
+                                >
+
+                                <label for="latitudeCity" class="form-label">Breitengrad Stadt</label>
+                                <input
+                                        id="latitudeCity"
+                                        name="latitudeCity"
+                                        type="text"
+                                        class="form-control mb-2"
+                                        value="{latitudeCity}"
+                                        required
+                                >
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {#if id == 0}
+                <button type="submit" class="btn btn-primary rounded-pill px-4 w-100 fw-bold">
+                    Anzeige erstellen
+                </button>
+                {#else}
+                <button type="submit" class="btn btn-primary rounded-pill px-4 w-100 fw-bold mb-4">
+                    Anzeige aktualisieren
+                </button>
+                    <button type="button" class="btn btn-danger rounded-pill px-4 w-100 fw-bold"
+                            data-bs-toggle="modal" data-bs-target="#deleteModal">
+                        Anzeige löschen
+                    </button>
+                {/if}
+
+                <!-- Bestätigungs-Modal -->
+                <div class="modal fade" id="deleteModal"
+                     data-bs-backdrop="static" data-bs-keyboard="false"
+                     tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="deleteModalLabel">
+                                    Diese Anzeige wirklich löschen?
+                                </h1>
+                                <button type="button" class="btn-close"
+                                        data-bs-dismiss="modal" aria-label="Schließen"></button>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary"
+                                        data-bs-dismiss="modal">Abbrechen</button>
+                                <button type="button" class="btn btn-danger"
+                                        id="confirmDeleteBtn">Endgültig löschen</button>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+</main>
+
+<script src="/js/newOffer.js"></script>
+<script src="/js/bootstrap.bundle.js"></script>
+
+</body>
+</html>

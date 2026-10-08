@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Anzeigen im Umkreis</title>
+    <link rel="icon" type="image/x-icon" href="/img/favicon/favicon.ico">
+    <!--
+    <link rel="icon" type="image/x-icon" href="/img/favicon/favicon.ico">
+    <link rel="stylesheet" href="/css/profileSetup.css">
+    -->
+
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/theme.css">
+
+    <!-- https://leafletjs.com/examples/quick-start/ -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+          integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+          crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+            integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+            crossorigin=""></script>
+</head>
+
+<body>
+    {#include components/navbar active = "findOffer" /}
+    {#include components/header title = "Suchergebnisse"/}
+<main class="container my-4">
+    <div class="row">
+        <div class="col-12 col-md-10 col-lg-7 mx-auto">
+
+            <h1 class="fs-2 mb-4">Anzeigen im Umkreis</h1>
+
+            <p class="subtitle">
+                Hier werden dir alle Anzeigen angezeigt die zu deinen angegebenen Kriterien passen.
+                <br> Nicht das gefunden was du gesucht hast? Versuche es erneut in einem größeren Umkreis, oder erstelle
+                selbst eine Anzeige in der Kategorie <i>Gesucht</i>
+            </p>
+
+            <div>
+                {#if offers}
+                    {#for offer in offers}
+
+                        <div class="card mb-3 shadow-sm">
+                            <div class="mb-1 shadow-sm offer-image card-img-top text-center btn-primary"
+                                 style="background-color: #fff7ed ">
+                                <img src="/img/offer/{offer.imageName}" alt="Anzeigen Bild" class="offer-image">
+                            </div>
+                            <div class="card-body">
+                                <div class="mb-2">
+                               <span class="badge text-bg-primary">
+                            {#switch offer.category.name}
+                                {#case 'FOR_SALE'}
+                                    Zu verkaufen
+                                {#case 'FOR_RENT'}
+                                    Zu verleihen
+                                {#case 'WANTED'}
+                                    Gesucht
+                            {/switch}
+                                    </span>
+                                    <span class="badge text-bg-primary-light">
+                                        {#switch offer.categorySubject.name}
+                                            {#case 'ELECTRONICS'}
+                                              Elektronik
+                                           {#case 'HOME_AND_GARDEN'}
+                                               Haus & Garten
+                                           {#case 'FASHION_AND_ACCESSORIES'}
+                                               Mode & Accessoires
+                                          {#case 'VEHICLES'}
+                                              Fahrzeuge
+                                          {#case 'SPORTS_AND_LEISURE'}
+                                           Sport & Freizeit
+                                           {/switch}
+                                    </span>
+                                </div>
+
+                                <h5 class="card-title">{offer.title}</h5>
+                                <p class="card-text text-truncate">
+                                    {offer.description}
+                                </p>
+                                <p class="card-text fw-bold fs-5">{offer.price} € <span
+                                            class="card-text fw-light"> {offer.addition}</span></p>
+
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <span class="text-body-secondary">von <strong>{labels.get(offer.ownerId)}</strong></span>
+                                    <div>
+                                        <a href="/profile/{offer.ownerId}" class="btn btn-outline-primary btn-sm">Profil
+                                            anzeigen</a>
+                                        <a href="/showOffer/{offer.id}" class="btn btn-primary btn-sm">Anzeige
+                                            öffnen</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {/for}
+                {#else}
+                    <div class="card mb-3 shadow-sm">
+                        <div class="mb-1 text-center">
+                            <div class="mb-3 offer-image card-img-top text-center btn-primary">
+                                <img src="/img/empty_icon.png" alt="Keine Anzeigen" class="offer-image">
+                            </div>
+                            <p class="card-text mb-3 text-body-secondary fw-bold">
+                                Keine Anzeigen zu deinen Parametern. </p>
+                        </div>
+                    </div>
+                {/if}
+            </div>
+
+        </div>
+    </div>
+</main>
+
+<script src="/js/bootstrap.bundle.js"></script>
+<script src="/js/listOffer.js"></script>
+
+</body>
+</html>

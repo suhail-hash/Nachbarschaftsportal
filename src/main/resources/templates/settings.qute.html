@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Einstellungen</title>
+  <link rel="icon" type="image/x-icon" href="/img/favicon/favicon.ico">
+  <link rel="stylesheet" href="/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/css/theme.css">
+</head>
+<body data-user-id="{userId}" data-email="{email}">
+
+{!Navbar aus components/navbar.qute.html!}
+  {#include components/navbar active = "profil" /}
+
+{!Back Button von header.qute.html!}
+{#include components/header title="Einstellungen" /}
+
+<main class="container my-4">
+  <div class="row">
+    <div class="col-12 col-md-8 col-lg-6 mx-auto">
+
+      {!Anzeigename form!}
+      <div class="card mb-4 shadow-sm">
+        <div class="card-body">
+          <h2 class="fs-5 card-title mb-3">Anzeigename</h2>
+
+          <form id="displayNameForm">
+            <label for="displayNameInput" class="form-label">
+              Wird anderen Nutzern angezeigt
+            </label>
+            <div class="d-flex gap-2">
+              <input id="displayNameInput" type="text"
+                     class="form-control" required>
+              <button type="submit" class="btn btn-primary">Speichern</button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      {!Adresse form!}
+      <div class="card mb-4 shadow-sm">
+        <div class="card-body">
+          <h2 class="fs-5 card-title mb-3">Adresse</h2>
+          <form id="addressForm">
+            <div class="mb-3">
+              <label for="cityInput" class="form-label">Stadt</label>
+              <input id="cityInput" type="text" class="form-control" required>
+            </div>
+            <div class="row">
+              <div class="col-4 mb-3">
+                <label for="plzInput" class="form-label">PLZ</label>
+                <input id="plzInput" type="text" class="form-control"
+                       inputmode="numeric" pattern="[0-9]\{5}" maxlength="5" required>
+              </div>
+              <div class="col-8 mb-3">
+                <label for="streetInput" class="form-label">Straße (optional)</label>
+                <input id="streetInput" type="text" class="form-control">
+              </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Adresse speichern</button>
+          </form>
+        </div>
+      </div>
+
+      {!danger zone!}
+      <div class="card border-danger shadow-sm mb-4">
+        <div class="card-body">
+          <h2 class="fs-5 card-title text-danger mb-3">Gefahrenzone</h2>
+          <p class="card-text">
+            Alle Portal-Daten (Profil, Freundschaften, Angebote) werden entfernt.
+            Dein Login-Account bleibt bestehen.
+          </p>
+          <button type="button" class="btn btn-outline-danger"
+                  data-bs-toggle="modal" data-bs-target="#deleteModal">
+            Profil löschen
+          </button>
+        </div>
+      </div>
+
+
+      <!-- Bestätigungs-Modal -->
+      <div class="modal fade" id="deleteModal"
+           data-bs-backdrop="static" data-bs-keyboard="false"
+           tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="deleteModalLabel">
+                Profil wirklich löschen?
+              </h1>
+              <button type="button" class="btn-close"
+                      data-bs-dismiss="modal" aria-label="Schließen"></button>
+            </div>
+
+            <div class="modal-body">
+              <p>Diese Aktion kann nicht rückgängig gemacht werden.
+                Zur Bestätigung tippe deine E-Mail-Adresse ein:</p>
+              <input id="confirmEmailInput" type="email"
+                     class="form-control" placeholder="deine@email.de">
+              <p id="deleteError" class="text-danger mt-2 mb-0" hidden></p>
+            </div>
+
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary"
+                      data-bs-dismiss="modal">Abbrechen</button>
+              <button type="button" class="btn btn-danger"
+                      id="confirmDeleteBtn">Endgültig löschen</button>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<script src="/js/bootstrap.bundle.js"></script>
+<script src="/js/settings.js"></script>
+</body>
+</html>
+
+<!--Quellen-->
+{!https://getbootstrap.com/docs/5.3/components/!}

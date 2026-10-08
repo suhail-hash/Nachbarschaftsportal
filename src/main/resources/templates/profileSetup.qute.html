@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/x-icon" href="/img/favicon/favicon.ico">
+    <title>Profil einrichten</title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/theme.css">
+</head>
+<body>
+<main class="container my-5">
+    <div class="row">
+        <div class="col-12 col-md-8 col-lg-6 mx-auto">
+            <div class="text-center mb-4">
+                <h1 class="display-6 fw-bold text-primary">
+                    Willkommen
+                </h1>
+                <p class="text-body-secondary mt-3">
+                    Bevor du das Nachbarschaftsportal nutzen kannst,
+                    benötigen wir noch ein paar Angaben.
+                </p>
+            </div>
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <form id="setupForm">
+                        <h2 class="fs-5 mb-3">
+                            Anzeigename
+                        </h2>
+                        <div class="mb-4">
+                            <label for="displayName" class="form-label">
+                                Anzeigename
+                            </label>
+                            <input
+                                    id="displayName"
+                                    type="text"
+                                    class="form-control"
+                                    placeholder="z. B. Gartenfreund">
+                            <div class="form-text">
+                                Diesen Namen sehen andere Nutzer.
+                            </div>
+                        </div>
+                        <h2 class="fs-5 mb-3">
+                            Adresse
+                        </h2>
+
+                        <p class="text-body-secondary small">
+                            Stadt und PLZ sind für die Nachbarschaftssuche notwendig.
+                            Deine Straße sehen nur bestätigte Freunde.
+                        </p>
+
+                        <div class="mb-3">
+                            <label for="city" class="form-label">
+                                Stadt
+                            </label>
+
+                            <input
+                                    id="city"
+                                    type="text"
+                                    class="form-control"
+                                    required>
+                        </div>
+                        <div class="row">
+                            <div class="col-4">
+                                <label for="plz" class="form-label">
+                                    PLZ
+                                </label>
+                                <input
+                                        id="plz"
+                                        type="text"
+                                        class="form-control"
+                                        inputmode="numeric"
+                                        pattern="[0-9]\{5}"
+                                        maxlength="5"
+                                        required>
+                            </div>
+                            <div class="col-8">
+                                <label for="street" class="form-label">
+                                    Straße (optional)
+                                </label>
+                                <input
+                                        id="street"
+                                        type="text"
+                                        class="form-control">
+                            </div>
+                        </div>
+                        <div class="d-grid mt-4">
+                            <button
+                                    type="submit"
+                                    class="btn btn-primary btn-lg">
+                                Profil erstellen
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<script src="/js/bootstrap.bundle.js"></script>
+<script src="/js/profileSetup.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Neue Anzeige erstellen</title>
+    <link rel="icon" type="image/x-icon" href="/img/favicon/favicon.ico">
+    <!--
+    <link rel="icon" type="image/x-icon" href="/img/favicon/favicon.ico">
+    <link rel="stylesheet" href="/css/profileSetup.css">
+    -->
+
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/theme.css">
+
+    <!-- https://leafletjs.com/examples/quick-start/ -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+          integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+          crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+            integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+            crossorigin=""></script>
+</head>
+
+<body>
+
+{!Navbar aus components/navbar.qute.html!}
+    {#include components/navbar active = "findOffer" /}
+
+
+<main class="container my-4">
+    <div class="row">
+        <div class="col-12 col-md-10 col-lg-7 mx-auto">
+
+            <h1 class="fs-2 mb-4">Anzeigen finden</h1>
+
+            <p class="subtitle">
+               Auf dieser Seite kannst du Anzeigen an Hand von verschiedenen Kriterien suchen. Wähle aus unterschiedlichen Kategorien, lege deinen Standort und einen Umkreis fest und schon kann die Suche losgehen!
+            </p>
+
+            <div class="card mb-3 shadow-sm">
+                <div class="card-body">
+                    <h2 class="fs-5 card-title mb-3">Was suchst du?</h2>
+                    <div class="row mb-1">
+                        <div class="col">
+                            <label for="category" class="form-label">Art</label>
+                            <select id="category" name="category" class="form-select">
+                                <option value="FOR_SALE">Kaufen</option>
+                                <option value="FOR_RENT">Leihen</option>
+                                <option value="WANTED">Gesuche</option>
+                            </select>
+                        </div>
+                        <div class="col">
+                            <label for="categorySubject" class="form-label">Kategorie</label>
+                            <select id="categorySubject" name="categorySubject" class="form-select">
+                                <option value="ELECTRONICS">Elektronik</option>
+                                <option value="HOME_AND_GARDEN">Haus & Garten</option>
+                                <option value="FASHION_AND_ACCESSORIES">Mode & Accessoires</option>
+                                <option value="VEHICLES">Fahrzeuge</option>
+                                <option value="SPORTS_AND_LEISURE">Sport & Freizeit</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <div>
+                <div class="card mb-4 shadow-sm">
+                    <div id="map" class="mb-1 shadow-sm offer-map card-img-top"></div>
+                    <div class="card-body">
+                        <h2 class="fs-5 card-title mb-3">Wo suchst du es?</h2>
+
+                        <div class="row">
+                            <div class="col-4 mb-3">
+                                <label for="plzFind" class="form-label">PLZ</label>
+                                <input id="plzFind" type="text" class="form-control"
+                                       inputmode="numeric" pattern="[0-9]\{5}" maxlength="5" value="{plz}" required>
+                            </div>
+                            <div class="col-8 mb-3">
+                                <label for="cityFind" class="form-label">Stadt</label>
+                                <input id="cityFind" type="text" class="form-control" value="{city}">
+                            </div>
+                        </div>
+                        <div class="mb-4">
+                            <label for="streetFind" class="form-label">Straße (optional)</label>
+                            <input id="streetFind" type="text" class="form-control" value="{street}">
+                        </div>
+                        <div class="row mb-1">
+                            <div class="col text-start"><label for="offerRadius">Umkreis:</label></div>
+                            <div class="col text-end"><strong id="offerRadiusValue"
+                                                              class="pl-4 font-weight-bold">1</strong><span> km</span>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <input type="range" min="1" max="100" value="{radiusStart}" step="0.5"
+                                   class="form-range custom-range" id="offerRadius">
+                        </div>
+                        <div class="text-end">
+                            <button id="refreshAddress" type="button" class="btn btn-primary">Standort aktualisieren</button>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+
+
+            <button id="searchButton" class="btn btn-primary rounded-pill px-4 w-100 fw-bold" type="button">
+                Suchen
+            </button>
+
+        </div>
+    </div>
+</main>
+<script src="/js/bootstrap.bundle.js"></script>
+<script src="/js/findOffer.js"></script>
+</body>
+</html>

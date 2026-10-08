@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Chat</title>
+    <link rel="icon" type="image/x-icon" href="/img/favicon/favicon.ico">
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/theme.css">
+</head>
+<body data-partner-id="{partnerId}">
+
+{!Navbar aus components/navbar.qute.html!}
+    {#include components/navbar active = "inbox" /}
+
+    {#include components/header title="Chat" /}
+
+
+<main class="container my-4">
+    <div class="row">
+        <div class="col-12 col-md-8 col-lg-6 mx-auto">
+
+            <h2 class="fs-3 mb-3">
+                <a id="partnerName" href="#"
+                   class="link-dark link-underline-opacity-0 link-underline-opacity-75-hover fw-semibold">…</a>
+            </h2>
+
+            <div id="messages" class="mb-3"></div>
+
+        </div>
+    </div>
+</main>
+<div class="sticky-bottom bg-white border-top py-2">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 col-md-8 col-lg-6 mx-auto">
+                <form id="sendForm" class="d-flex gap-2">
+                    <input id="textInput" class="form-control rounded-pill px-3"
+                           placeholder="Nachricht schreiben…" autocomplete="off">
+                    <button type="submit"
+                            class="btn btn-primary rounded-pill px-4">Senden
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="/js/bootstrap.bundle.js"></script>
+<script src="/js/chat.js"></script>
+</body>
+</html>

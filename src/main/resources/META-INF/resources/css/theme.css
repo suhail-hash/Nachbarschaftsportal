@@ -1,0 +1,151 @@
+
+/* ============================================================
+   theme.css — globale Variablen für das Nachbarschaftsportal
+   ============================================================ */
+:root {
+    --portal-primary:       #f97316;   /* Orange */
+    --portal-primary-dark:  #ea580c;   /* Hover/Active */
+    --portal-primary-soft:  #fff7ed;   /* sehr helles Orange für Hintergründe */
+    --portal-text:          #212529;
+    --portal-border:        #e9ecef;
+
+    /* Bootstrap-Links global auf Orange umbiegen */
+    --bs-link-color: var(--portal-primary);
+    --bs-link-hover-color: var(--portal-primary-dark);
+}
+
+/*Buttons*/
+.btn-primary {
+    --bs-btn-bg: var(--portal-primary);
+    --bs-btn-border-color: var(--portal-primary);
+    --bs-btn-hover-bg: var(--portal-primary-dark);
+    --bs-btn-hover-border-color: var(--portal-primary-dark);
+    --bs-btn-active-bg: var(--portal-primary-dark);
+    --bs-btn-active-border-color: var(--portal-primary-dark);
+    --bs-btn-disabled-bg: var(--portal-primary);
+    --bs-btn-disabled-border-color: var(--portal-primary);
+}
+
+/*Outlines*/
+.btn-outline-primary {
+    --bs-btn-color: var(--portal-primary);
+    --bs-btn-border-color: var(--portal-primary);
+    --bs-btn-hover-bg: var(--portal-primary);
+    --bs-btn-hover-border-color: var(--portal-primary);
+    --bs-btn-active-bg: var(--portal-primary-dark);
+    --bs-btn-active-border-color: var(--portal-primary-dark);
+}
+
+.list-group {
+    --bs-list-group-action-hover-bg: var(--portal-primary-soft);
+    --bs-list-group-action-hover-color: var(--portal-primary-dark);
+    --bs-list-group-action-active-bg: var(--portal-primary-soft);
+    --bs-list-group-action-active-color: var(--portal-primary-dark);
+}
+
+/*Text-Akzente und Badges*/
+.badge.text-bg-primary {
+    background-color: var(--portal-primary) !important;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+.badge.text-bg-primary-light {
+    background-color: transparent !important;
+    color: var(--portal-primary); !important;
+    border: 1px solid var(--portal-primary);
+}
+
+.text-primary {
+    color: var(--portal-primary) !important;
+}
+.spinner-border.text-primary {
+    color: var(--portal-primary) !important;
+}
+body {
+    background-color: #fff;
+    color: var(--portal-text);
+}
+
+/*Navbar*/
+.navbar-portal {
+    background-color: #fff;
+    border-bottom: 1px solid var(--portal-border);
+}
+.navbar-portal .navbar-brand {
+    color: var(--portal-primary);
+    font-weight: 700;
+}
+.navbar-portal .nav-link.active {
+    color: var(--portal-primary);
+    font-weight: 600;
+}
+
+.offer-map {
+    height: 420px;
+}
+
+.offer-image {
+    height: 250px;
+}
+
+.offer-image-details {
+    height: 350px;
+}
+
+/* Chat-Bubbles */
+.msg {
+    margin: 6px 0;
+    padding: 8px 12px;
+    border-radius: 14px;
+    max-width: 75%;
+}
+.msg.mine {
+    background: var(--portal-primary-soft);
+    color: var(--portal-text);
+    margin-left: auto;
+    text-align: right;
+}
+.msg.theirs {
+    background: var(--portal-border);
+    color: var(--portal-text);
+    margin-right: auto;
+}
+.msg small {
+    display: block;
+    font-size: 0.75em;
+    opacity: 0.75;
+}
+.msg.mine a { color: #fff; }
+
+.custom-range::-webkit-slider-thumb {
+    background: #f97316;
+    width: 18px;
+    height: 18px;
+    margin-top: -5px;
+    cursor: pointer;
+}
+.custom-range:active::-webkit-slider-thumb {
+    background: #ea580c;
+}
+
+/*
+https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Selectors/::-moz-range-thumb
+*/
+.custom-range::-moz-range-thumb {
+    background: #f97316;
+    border: none;
+    width: 18px;
+    height: 18px;
+}
+.custom-range:active::-moz-range-thumb {
+    background: #ea580c;
+}
+
+.offer-link {
+    color: #000 !important;
+    text-decoration: underline;
+}
+.offer-link:hover {
+    color: #000 !important;
+    text-decoration: none;
+}

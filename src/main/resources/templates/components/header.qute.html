@@ -1,0 +1,19 @@
+<header class="bg-white border-bottom position-sticky z-1" style="top: 56px;">
+    <script>
+        function goBack() {
+            if (history.length > 1) {
+                history.back();
+            } else {
+                window.location.href = "/home";
+            }
+        }
+    </script>
+    <div class="container d-flex align-items-center gap-3 py-2 ">
+        <button onclick="goBack()" class="btn btn-light rounded-pill px-3"
+           aria-label="Zurück">‹ Zurück</button>
+        <span class="navbar-brand d-flex align-items-center">
+            <h1 class="fs-5 mb-0">{title}</h1>
+        </span>
+
+    </div>
+</header>

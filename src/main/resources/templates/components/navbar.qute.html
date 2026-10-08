@@ -1,0 +1,64 @@
+<nav class="navbar navbar-expand-lg navbar-portal sticky-top">
+    <div class="container">
+        <div>
+            <a class="navbar-brand d-flex align-items-center" href="/home">
+                <img src="/img/favicon/favicon-32x32.png" class="me-2">
+                Nachbarschaftsportal
+            </a>
+        </div>
+
+        <button class="navbar-toggler" type="button"
+                data-bs-toggle="collapse" data-bs-target="#mainNav"
+                aria-controls="mainNav" aria-expanded="false"
+                aria-label="Navigation umschalten">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <!--Liste mit ganzen Navbar Buttons-->
+        <div class="collapse navbar-collapse" id="mainNav">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link {#if active == 'home'}active{/if}"
+                       {#if active == 'home'}aria-current="page"{/if}
+                       href="/home">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {#if active == 'findOffer'}active{/if}"
+                       href="/findOffer">Anzeigen finden</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {#if active == 'newOffer'}active{/if}"
+                       href="/newOffer">Anzeige erstellen</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {#if active == 'friends'}active{/if}"
+                       href="/friends">Freunde</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {#if active == 'inbox'}active{/if}"
+                       href="/inbox">Postfach</a>
+                </li>
+            </ul>
+            {#if userId}
+                <!-- Account dropdown-->
+                <ul class="navbar-nav z-3">
+                    <li class="nav-item dropdown ">
+                        <a class="nav-link dropdown-toggle  {#if active == 'profil'}active{/if}" href="#" role="button"
+                           data-bs-toggle="dropdown" aria-expanded="false">
+                            {name ?: "Mein Konto"}
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" href="/profile">Mein Profil</a></li>
+                            <li><a class="dropdown-item" href="/settings">Einstellungen</a></li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li><a class="dropdown-item text-danger" href="/logout">Abmelden</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            {#else}
+                <a class="btn btn-primary rounded-pill px-3" href="/login">Anmelden</a>
+            {/if}
+        </div>
+    </div>
+</nav>
